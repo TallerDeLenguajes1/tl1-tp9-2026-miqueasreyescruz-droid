@@ -7,6 +7,8 @@ string ruta = verificarRuta();
 
 listarContenido(ruta);
 
+crearReporteFile(ruta);
+
 // //////////////////////////
 //        FUNCIONES
 // //////////////////////////
@@ -19,12 +21,12 @@ string verificarRuta()
 
     while(!esValido)
     {
-        Console.Write("Ingrese la ruta del directorio a analizar: ");
+        Console.Write("-> Ingrese la ruta del directorio a analizar: ");
         path = Console.ReadLine(); 
 
         if (path == "") 
         {
-            Console.WriteLine("Error: La ruta no puede ser vacia. Intente de nuevo.");
+            Console.WriteLine("Error: La ruta no puede ser vacia. Intente de nuevo.\n");
             continue;
         }
 
@@ -34,7 +36,7 @@ string verificarRuta()
         }
         else
         {
-            Console.WriteLine("Error: La ruta ingresada no existe. Intente de nuevo");
+            Console.WriteLine("Error: La ruta ingresada no existe. Intente de nuevo.\n");
         }
     }
 
@@ -60,7 +62,7 @@ void listarContenido(string path)
     }
     Console.WriteLine("");
     
-    // Creo una nueva instancia para cada archivo, y con la propiedad Lenght obtengo su tamaño
+    // Creo una nueva instancia para cada archivo (info), y con la propiedad Lenght obtengo su tamaño
     // Divido en 1024.0 para obtener un resulta decimal y su valor en KB (originalmente en Bytes)
     Console.WriteLine("ARCHIVOS ENCONTRADOS:");
     foreach(string archivo in archivos)
@@ -72,4 +74,27 @@ void listarContenido(string path)
     Console.WriteLine("");
 
     Console.WriteLine("===============================================\n");
+}
+
+// Recibe una ruta, y crea en dicha ruta un archivo reporte_archivos_file.csv  
+// Uso el objeto File
+void crearReporteFile(string path)
+{
+    // Creo la ruta donde se creara el archivo
+    // Creo una lista, donde guardare las lineas que tendra el arhivo
+    string rutaFinal = Path.Combine(path,"reporte_archivo_file.csv");
+    List<string> lineas = new List<string> ();
+    FileInfo info;
+
+    // Agrego la cabacera 
+    lineas.Add("Nombre del Archivo;Tamaño (KB);Ultima Modificacion");
+
+    // Para cada archivo, agrego una linea
+    foreach(var archivo in Directory.GetFiles(path))
+    {
+        info = new(archivo);
+        lineas.Add($"{info.Name};{info.Length / 1024.0:F2} KB;{info.LastWriteTime}");
+    }
+
+    File.WriteAllLines(rutaFinal, lineas);
 }
