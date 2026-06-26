@@ -1,6 +1,6 @@
-﻿// ///////////////////////////
+﻿// =========================
 //           MAIN
-// ///////////////////////////
+// =========================
 
 string ruta = verificarRuta();
 
@@ -9,9 +9,9 @@ listarContenido(ruta);
 crearReporteFile(ruta);
 crearReporteStream(ruta);
 
-// //////////////////////////
+// =========================
 //        FUNCIONES
-// //////////////////////////
+// =========================
 
 /// Solicita al usuario una ruta de directorio y valida que exista
 string verificarRuta()
