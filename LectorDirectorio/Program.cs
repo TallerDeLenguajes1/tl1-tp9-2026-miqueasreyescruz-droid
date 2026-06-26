@@ -2,12 +2,12 @@
 //           MAIN
 // ///////////////////////////
 
-/* Ruta de Testeo: C:\Users\DELL\Documents\FACET */
 string ruta = verificarRuta();
 
 listarContenido(ruta);
 
 crearReporteFile(ruta);
+crearReporteStream(ruta);
 
 // //////////////////////////
 //        FUNCIONES
@@ -80,10 +80,8 @@ void listarContenido(string path)
 // Uso el objeto File
 void crearReporteFile(string path)
 {
-    // Creo la ruta donde se creara el archivo
-    // Creo una lista, donde guardare las lineas que tendra el arhivo
-    string rutaFinal = Path.Combine(path,"reporte_archivo_file.csv");
-    List<string> lineas = new List<string> ();
+    string rutaFinal = Path.Combine(path,"reporte_archivo_file.csv"); // Creo la ruta donde se creara el archivo
+    List<string> lineas = new List<string> ();  // Creo una lista, donde guardare las lineas que tendra el arhivo
     FileInfo info;
 
     // Agrego la cabacera 
@@ -97,4 +95,21 @@ void crearReporteFile(string path)
     }
 
     File.WriteAllLines(rutaFinal, lineas);
+}
+
+// Recibe una ruta, y crea en dicha ruta un archivo reporte_archivos_stream.csv  
+// Usa la clase Stream
+void crearReporteStream(string path)
+{
+    string rutaFinal = Path.Combine(path,"reporte_archivo_stream.csv");
+    using StreamWriter escritor = new StreamWriter(rutaFinal);
+    FileInfo info;
+
+    escritor.WriteLine("Nombre del Archivo;Tamaño (KB);Ultima Modificacion");
+
+    foreach(var archivo in Directory.GetFiles(path))
+    {
+        info = new(archivo);
+        escritor.WriteLine($"{info.Name};{info.Length / 1024.0:F2} KB;{info.LastWriteTime}");
+    }
 }
