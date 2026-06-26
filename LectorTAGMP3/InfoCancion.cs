@@ -1,4 +1,4 @@
-namespace InfoCanciones;
+namespace InfoCancion;
 
 public class Id3v1Tag
 {
